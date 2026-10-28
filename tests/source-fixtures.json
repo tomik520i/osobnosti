@@ -1,0 +1,798 @@
+{
+  "fixtures": [
+    {
+      "name": "all_neutral",
+      "answers": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "expected": {
+        "E": {
+          "sum": 30,
+          "mean": 3.0,
+          "position0to100": 50.0
+        },
+        "A": {
+          "sum": 30,
+          "mean": 3.0,
+          "position0to100": 50.0
+        },
+        "C": {
+          "sum": 30,
+          "mean": 3.0,
+          "position0to100": 50.0
+        },
+        "ES": {
+          "sum": 30,
+          "mean": 3.0,
+          "position0to100": 50.0
+        },
+        "I": {
+          "sum": 30,
+          "mean": 3.0,
+          "position0to100": 50.0
+        }
+      }
+    },
+    {
+      "name": "all_very_inaccurate",
+      "answers": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "expected": {
+        "E": {
+          "sum": 30,
+          "mean": 3.0,
+          "position0to100": 50.0
+        },
+        "A": {
+          "sum": 26,
+          "mean": 2.6,
+          "position0to100": 40.0
+        },
+        "C": {
+          "sum": 26,
+          "mean": 2.6,
+          "position0to100": 40.0
+        },
+        "ES": {
+          "sum": 42,
+          "mean": 4.2,
+          "position0to100": 80.0
+        },
+        "I": {
+          "sum": 22,
+          "mean": 2.2,
+          "position0to100": 30.0
+        }
+      }
+    },
+    {
+      "name": "all_very_accurate",
+      "answers": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "expected": {
+        "E": {
+          "sum": 30,
+          "mean": 3.0,
+          "position0to100": 50.0
+        },
+        "A": {
+          "sum": 34,
+          "mean": 3.4,
+          "position0to100": 60.0
+        },
+        "C": {
+          "sum": 34,
+          "mean": 3.4,
+          "position0to100": 60.0
+        },
+        "ES": {
+          "sum": 18,
+          "mean": 1.8,
+          "position0to100": 20.0
+        },
+        "I": {
+          "sum": 38,
+          "mean": 3.8,
+          "position0to100": 70.0
+        }
+      }
+    },
+    {
+      "name": "maximum_all_scales",
+      "answers": [
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        1,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        1,
+        5,
+        5,
+        5,
+        5,
+        1,
+        5,
+        1,
+        5,
+        5,
+        1,
+        5
+      ],
+      "expected": {
+        "E": {
+          "sum": 50,
+          "mean": 5.0,
+          "position0to100": 100.0
+        },
+        "A": {
+          "sum": 50,
+          "mean": 5.0,
+          "position0to100": 100.0
+        },
+        "C": {
+          "sum": 50,
+          "mean": 5.0,
+          "position0to100": 100.0
+        },
+        "ES": {
+          "sum": 50,
+          "mean": 5.0,
+          "position0to100": 100.0
+        },
+        "I": {
+          "sum": 50,
+          "mean": 5.0,
+          "position0to100": 100.0
+        }
+      }
+    },
+    {
+      "name": "minimum_all_scales",
+      "answers": [
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        5,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        5,
+        1,
+        1,
+        1,
+        1,
+        5,
+        1,
+        5,
+        1,
+        1,
+        5,
+        1
+      ],
+      "expected": {
+        "E": {
+          "sum": 10,
+          "mean": 1.0,
+          "position0to100": 0.0
+        },
+        "A": {
+          "sum": 10,
+          "mean": 1.0,
+          "position0to100": 0.0
+        },
+        "C": {
+          "sum": 10,
+          "mean": 1.0,
+          "position0to100": 0.0
+        },
+        "ES": {
+          "sum": 10,
+          "mean": 1.0,
+          "position0to100": 0.0
+        },
+        "I": {
+          "sum": 10,
+          "mean": 1.0,
+          "position0to100": 0.0
+        }
+      }
+    },
+    {
+      "name": "mixed_example",
+      "answers": [
+        4,
+        2,
+        5,
+        4,
+        3,
+        2,
+        5,
+        4,
+        2,
+        1,
+        3,
+        1,
+        2,
+        5,
+        4,
+        3,
+        5,
+        1,
+        4,
+        2,
+        5,
+        2,
+        4,
+        1,
+        5,
+        1,
+        4,
+        3,
+        2,
+        2,
+        4,
+        1,
+        5,
+        3,
+        4,
+        2,
+        5,
+        1,
+        4,
+        3,
+        5,
+        4,
+        2,
+        5,
+        1,
+        2,
+        4,
+        3,
+        5,
+        4
+      ],
+      "expected": {
+        "E": {
+          "sum": 41,
+          "mean": 4.1,
+          "position0to100": 77.5
+        },
+        "A": {
+          "sum": 45,
+          "mean": 4.5,
+          "position0to100": 87.5
+        },
+        "C": {
+          "sum": 36,
+          "mean": 3.6,
+          "position0to100": 65.0
+        },
+        "ES": {
+          "sum": 25,
+          "mean": 2.5,
+          "position0to100": 37.5
+        },
+        "I": {
+          "sum": 37,
+          "mean": 3.7,
+          "position0to100": 67.5
+        }
+      }
+    }
+  ],
+  "originalItems": [
+    {
+      "id": 1,
+      "textEnglishPublicDomain": "Am the life of the party.",
+      "scale": "E",
+      "reverse": false
+    },
+    {
+      "id": 2,
+      "textEnglishPublicDomain": "Feel little concern for others.",
+      "scale": "A",
+      "reverse": true
+    },
+    {
+      "id": 3,
+      "textEnglishPublicDomain": "Am always prepared.",
+      "scale": "C",
+      "reverse": false
+    },
+    {
+      "id": 4,
+      "textEnglishPublicDomain": "Get stressed out easily.",
+      "scale": "ES",
+      "reverse": true
+    },
+    {
+      "id": 5,
+      "textEnglishPublicDomain": "Have a rich vocabulary.",
+      "scale": "I",
+      "reverse": false
+    },
+    {
+      "id": 6,
+      "textEnglishPublicDomain": "Don't talk a lot.",
+      "scale": "E",
+      "reverse": true
+    },
+    {
+      "id": 7,
+      "textEnglishPublicDomain": "Am interested in people.",
+      "scale": "A",
+      "reverse": false
+    },
+    {
+      "id": 8,
+      "textEnglishPublicDomain": "Leave my belongings around.",
+      "scale": "C",
+      "reverse": true
+    },
+    {
+      "id": 9,
+      "textEnglishPublicDomain": "Am relaxed most of the time.",
+      "scale": "ES",
+      "reverse": false
+    },
+    {
+      "id": 10,
+      "textEnglishPublicDomain": "Have difficulty understanding abstract ideas.",
+      "scale": "I",
+      "reverse": true
+    },
+    {
+      "id": 11,
+      "textEnglishPublicDomain": "Feel comfortable around people.",
+      "scale": "E",
+      "reverse": false
+    },
+    {
+      "id": 12,
+      "textEnglishPublicDomain": "Insult people.",
+      "scale": "A",
+      "reverse": true
+    },
+    {
+      "id": 13,
+      "textEnglishPublicDomain": "Pay attention to details.",
+      "scale": "C",
+      "reverse": false
+    },
+    {
+      "id": 14,
+      "textEnglishPublicDomain": "Worry about things.",
+      "scale": "ES",
+      "reverse": true
+    },
+    {
+      "id": 15,
+      "textEnglishPublicDomain": "Have a vivid imagination.",
+      "scale": "I",
+      "reverse": false
+    },
+    {
+      "id": 16,
+      "textEnglishPublicDomain": "Keep in the background.",
+      "scale": "E",
+      "reverse": true
+    },
+    {
+      "id": 17,
+      "textEnglishPublicDomain": "Sympathize with others' feelings.",
+      "scale": "A",
+      "reverse": false
+    },
+    {
+      "id": 18,
+      "textEnglishPublicDomain": "Make a mess of things.",
+      "scale": "C",
+      "reverse": true
+    },
+    {
+      "id": 19,
+      "textEnglishPublicDomain": "Seldom feel blue.",
+      "scale": "ES",
+      "reverse": false
+    },
+    {
+      "id": 20,
+      "textEnglishPublicDomain": "Am not interested in abstract ideas.",
+      "scale": "I",
+      "reverse": true
+    },
+    {
+      "id": 21,
+      "textEnglishPublicDomain": "Start conversations.",
+      "scale": "E",
+      "reverse": false
+    },
+    {
+      "id": 22,
+      "textEnglishPublicDomain": "Am not interested in other people's problems.",
+      "scale": "A",
+      "reverse": true
+    },
+    {
+      "id": 23,
+      "textEnglishPublicDomain": "Get chores done right away.",
+      "scale": "C",
+      "reverse": false
+    },
+    {
+      "id": 24,
+      "textEnglishPublicDomain": "Am easily disturbed.",
+      "scale": "ES",
+      "reverse": true
+    },
+    {
+      "id": 25,
+      "textEnglishPublicDomain": "Have excellent ideas.",
+      "scale": "I",
+      "reverse": false
+    },
+    {
+      "id": 26,
+      "textEnglishPublicDomain": "Have little to say.",
+      "scale": "E",
+      "reverse": true
+    },
+    {
+      "id": 27,
+      "textEnglishPublicDomain": "Have a soft heart.",
+      "scale": "A",
+      "reverse": false
+    },
+    {
+      "id": 28,
+      "textEnglishPublicDomain": "Often forget to put things back in their proper place.",
+      "scale": "C",
+      "reverse": true
+    },
+    {
+      "id": 29,
+      "textEnglishPublicDomain": "Get upset easily.",
+      "scale": "ES",
+      "reverse": true
+    },
+    {
+      "id": 30,
+      "textEnglishPublicDomain": "Do not have a good imagination.",
+      "scale": "I",
+      "reverse": true
+    },
+    {
+      "id": 31,
+      "textEnglishPublicDomain": "Talk to a lot of different people at parties.",
+      "scale": "E",
+      "reverse": false
+    },
+    {
+      "id": 32,
+      "textEnglishPublicDomain": "Am not really interested in others.",
+      "scale": "A",
+      "reverse": true
+    },
+    {
+      "id": 33,
+      "textEnglishPublicDomain": "Like order.",
+      "scale": "C",
+      "reverse": false
+    },
+    {
+      "id": 34,
+      "textEnglishPublicDomain": "Change my mood a lot.",
+      "scale": "ES",
+      "reverse": true
+    },
+    {
+      "id": 35,
+      "textEnglishPublicDomain": "Am quick to understand things.",
+      "scale": "I",
+      "reverse": false
+    },
+    {
+      "id": 36,
+      "textEnglishPublicDomain": "Don't like to draw attention to myself.",
+      "scale": "E",
+      "reverse": true
+    },
+    {
+      "id": 37,
+      "textEnglishPublicDomain": "Take time out for others.",
+      "scale": "A",
+      "reverse": false
+    },
+    {
+      "id": 38,
+      "textEnglishPublicDomain": "Shirk my duties.",
+      "scale": "C",
+      "reverse": true
+    },
+    {
+      "id": 39,
+      "textEnglishPublicDomain": "Have frequent mood swings.",
+      "scale": "ES",
+      "reverse": true
+    },
+    {
+      "id": 40,
+      "textEnglishPublicDomain": "Use difficult words.",
+      "scale": "I",
+      "reverse": false
+    },
+    {
+      "id": 41,
+      "textEnglishPublicDomain": "Don't mind being the center of attention.",
+      "scale": "E",
+      "reverse": false
+    },
+    {
+      "id": 42,
+      "textEnglishPublicDomain": "Feel others' emotions.",
+      "scale": "A",
+      "reverse": false
+    },
+    {
+      "id": 43,
+      "textEnglishPublicDomain": "Follow a schedule.",
+      "scale": "C",
+      "reverse": false
+    },
+    {
+      "id": 44,
+      "textEnglishPublicDomain": "Get irritated easily.",
+      "scale": "ES",
+      "reverse": true
+    },
+    {
+      "id": 45,
+      "textEnglishPublicDomain": "Spend time reflecting on things.",
+      "scale": "I",
+      "reverse": false
+    },
+    {
+      "id": 46,
+      "textEnglishPublicDomain": "Am quiet around strangers.",
+      "scale": "E",
+      "reverse": true
+    },
+    {
+      "id": 47,
+      "textEnglishPublicDomain": "Make people feel at ease.",
+      "scale": "A",
+      "reverse": false
+    },
+    {
+      "id": 48,
+      "textEnglishPublicDomain": "Am exacting in my work.",
+      "scale": "C",
+      "reverse": false
+    },
+    {
+      "id": 49,
+      "textEnglishPublicDomain": "Often feel blue.",
+      "scale": "ES",
+      "reverse": true
+    },
+    {
+      "id": 50,
+      "textEnglishPublicDomain": "Am full of ideas.",
+      "scale": "I",
+      "reverse": false
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# Runtime data and secrets never belong in this repository.
+.env
+.env.*
+!.env.example
+config.php
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+*.zip
+*.tar*
+data/
+runtime/
+sessions/
+backups/
+exports/
+outputs/
+credentials*
+node_modules/
+__pycache__/
+.DS_Store
+Thumbs.db

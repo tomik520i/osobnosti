@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#191b1f">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Osobnost IPIP-50, historická mapa temperamentu a intimní preference. Otevřený výpočet, podklady, limity a karty ke stažení. Vlastní nevalidované české verze.">
+  <meta name="referrer" content="no-referrer">
+  <title>Osobnosti — poznej své vzorce</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css?v=3">
+  <link rel="stylesheet" href="./extensions.css?v=3">
+  <link rel="stylesheet" href="./profiles.css?v=3">
+  <link rel="stylesheet" href="./polish.css?v=3.1">
+  <link rel="stylesheet" href="./local-profile.css?v=3.2">
+  <link rel="stylesheet" href="./comparison-ai.css?v=3.5">
+  <link rel="stylesheet" href="./journey.css?v=3.6">
+  <script type="module" src="./app.mjs?v=3.6"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Přejít na obsah</a>
+  <header class="header">
+    <a class="brand" href="#domu" aria-label="Osobnosti — úvod"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 6C11-3 0 12 12 20C0 28 11 43 20 34C29 43 40 28 28 20C40 12 29-3 20 6Z" fill="currentColor"/><circle cx="20" cy="20" r="5" fill="#191b1f"/></svg><span>osobnosti<span class="brand-dot">.</span></span></a>
+    <nav aria-label="Hlavní navigace"><a href="#testy" data-nav="home">Testy</a><a href="#profil" data-nav="results">Můj profil</a><a href="#porovnani" data-nav="compare">Porovnání</a><a href="#podklady" data-nav="science">Zdroje</a></nav>
+    <a class="header-cta" href="#ucet" data-nav="account">Účet <span aria-hidden="true">↗</span></a>
+  </header>
+  <details class="wrap browser-memory" id="browser-memory" aria-label="Ukládání v prohlížeči" hidden><summary><span class="memory-dot" aria-hidden="true"></span><span id="memory-summary">Ukládání: jen v otevřené kartě</span><span class="memory-change">Změnit</span></summary>
+    <div class="memory-top"><label><input type="checkbox" id="remember-profile" aria-describedby="browser-memory-help browser-memory-status"> Pamatovat si profil v tomto prohlížeči</label><a href="#profil">Otevřít můj profil →</a></div>
+    <p id="browser-memory-help">Včetně intimních odpovědí. Uloží se jen do tohoto prohlížeče; může je tu otevřít i další člověk. <a href="#soukromi">Podrobnosti</a></p>
+    <p id="browser-memory-status" role="status" aria-live="polite"></p>
+  </details>
+  <main id="main" tabindex="-1"><noscript><div class="notice">Pro vyplnění a místní vyhodnocení potřebuješ zapnutý JavaScript. Uložení odpovědí do účtu je dobrovolné. <a href="https://www.ipip.ori.org/New_IPIP-50-item-scale.htm">Původní metoda IPIP-50</a>.</div></noscript></main>
+  <footer class="footer"><div><a class="footer-brand" href="#domu">osobnosti.</a><p>Více porozumění. Prostor pro souvislosti.</p></div><div><a href="#podklady">Zdroje a metodika</a><a href="#jak-cist">Jak číst výsledky</a><a href="#soukromi">Soukromí</a></div><p class="footer-note">Osobnost · temperament · intimita<br>Podklady a limity u každého modulu · web 3.6</p></footer>
+  <dialog id="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-description"><form method="dialog"><span class="eyebrow">TVÉ ODPOVĚDI</span><h2 id="reset-title">Začít s čistým listem?</h2><p id="reset-description">Vybrané odpovědi se smažou. Už stažené soubory zůstanou v zařízení.</p><div class="actions"><button class="button secondary" value="cancel">Ponechat odpovědi</button><button class="button" value="reset">Smazat a začít znovu</button></div></form></dialog>
+  <div id="announcement" class="sr-only" aria-live="polite"></div>
+</body>
+</html>

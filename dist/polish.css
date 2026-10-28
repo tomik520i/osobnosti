@@ -1,0 +1,59 @@
+/* Quiet depth and feedback; the questionnaire stays still while answering. */
+:root{--ease-out:cubic-bezier(.22,1,.36,1)}
+body{background-image:radial-gradient(ellipse at 85% 0,rgba(185,193,209,.055),transparent 42rem)}
+.header{background:rgba(18,19,22,.94)}
+.header nav a{position:relative;border-bottom-color:transparent!important;transition:color .2s ease}
+.header nav a::after{content:"";position:absolute;bottom:2px;left:0;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease-out);opacity:.75}
+.header nav a[aria-current]::after,.header nav a:focus-visible::after{transform:scaleX(1)}
+.brand svg{transition:transform .45s var(--ease-out)}
+.button,.header-cta{transition:background .2s ease,border-color .2s ease,box-shadow .25s ease,transform .25s var(--ease-out)}
+.button{box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 3px 10px rgba(0,0,0,.12)}
+.button.secondary{box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.button>span{transition:transform .25s var(--ease-out)}
+.button:active:not(:disabled){transform:translateY(1px) scale(.985);box-shadow:none}
+.button:disabled{box-shadow:none}
+.module-card,.trait-card,.profile-art,.chart-paper,.result-detail,.role-result,.context-card,.share-preview,.compare-row,.practice-group,.profile-grid>.paper,.source-card{background-image:linear-gradient(140deg,rgba(255,255,255,.035),transparent 55%);box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 12px 32px -24px rgba(0,0,0,.65);transition:border-color .25s ease,box-shadow .3s ease,transform .3s var(--ease-out)}
+.module-card{position:relative;overflow:hidden}
+.module-card::before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,rgba(225,231,242,.55),transparent);opacity:.5;transition:opacity .3s ease}
+.module-icon{transition:transform .35s var(--ease-out)}
+.profile-art{background-image:radial-gradient(ellipse at 50% 25%,rgba(213,220,234,.1),transparent 65%),linear-gradient(145deg,#252932,#1b1e24)}
+.orbit-art svg>g{transform-origin:200px 165px;transition:transform 1.2s var(--ease-out)}
+.question{transition:border-color .2s ease,box-shadow .2s ease}
+.question:focus-within{border-color:#aeb8ca;box-shadow:0 0 0 1px rgba(174,184,202,.1)}
+.choice-visual{transition:background .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .2s var(--ease-out)}
+.choice input:checked+.choice-visual{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 3px 12px rgba(0,0,0,.16)}
+.choice:active .choice-visual{transform:scale(.97)}
+input:not([type=checkbox]):not([type=radio]),select,textarea{transition:border-color .2s ease,box-shadow .2s ease}
+input:not([type=checkbox]):not([type=radio]):focus-visible,select:focus-visible,textarea:focus-visible{border-color:#c0c9db;box-shadow:0 0 0 3px rgba(192,201,219,.1)}
+.score-dot{transition:box-shadow .25s ease}
+.pair-values b,.chart-row-head>strong,.detail-score{font-variant-numeric:tabular-nums}
+.share-preview img{border-radius:10px;box-shadow:0 6px 22px rgba(0,0,0,.18)}
+details[open]>:not(summary){animation:detail-open .25s ease-out}
+dialog[open]{animation:dialog-open .24s var(--ease-out)}
+dialog::backdrop{backdrop-filter:blur(5px)}
+@keyframes detail-open{from{opacity:.4}to{opacity:1}}
+@keyframes dialog-open{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+@media(hover:hover) and (pointer:fine){
+  .header nav a:hover::after{transform:scaleX(1)}
+  .brand:hover svg{transform:rotate(12deg)}
+  .button:hover:not(:disabled),.header-cta:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(0,0,0,.2)}
+  .button:hover>span{transform:translate(2px,-2px)}
+  .button:active:not(:disabled){transform:translateY(1px) scale(.985)}
+  .module-card:hover,.share-preview:hover,.profile-grid>.paper:hover{transform:translateY(-4px);border-color:#626b7c;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 38px -22px rgba(0,0,0,.8)}
+  .module-card:hover::before{opacity:1}
+  .module-card:hover .module-icon{transform:rotate(-6deg) scale(1.06)}
+  .trait-card:hover,.role-result:hover,.compare-row:hover,.source-card:hover{border-color:#656e80}
+  .profile-art:hover .orbit-art svg>g{transform:rotate(12deg)}
+  .chart-row:hover .score-dot,.role-result:hover .score-dot{box-shadow:0 0 0 1px var(--trait),0 0 0 6px rgba(205,215,232,.1)}
+  .choice:hover .choice-visual{transform:translateY(-2px)}
+  .choice:active .choice-visual{transform:scale(.97)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .button,.header-cta,.module-card,.share-preview,.profile-grid>.paper,.choice-visual,.brand svg,.module-icon,.orbit-art svg>g{transform:none!important}
+}
+@media print{
+  body{background-image:none}
+  *,*::before,*::after{animation:none!important;transition:none!important;box-shadow:none!important}
+}
