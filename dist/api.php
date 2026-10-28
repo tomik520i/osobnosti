@@ -8,6 +8,8 @@ header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: no-referrer');
 function reply(array $body, int $status=200): never { http_response_code($status); echo json_encode($body, JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR); exit; }
 function fail(string $message, int $status=400): never { reply(['error'=>$message],$status); }
+define('OSOBNOSTI_API',true);
+require __DIR__.'/auth.php';
 try {
     $test = getenv('OSOBNOSTI_TEST_DIR');
     $dir = $test ?: getenv('OSOBNOSTI_DATA_DIR');
@@ -27,15 +29,15 @@ try {
     $db->exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000; PRAGMA secure_delete=ON;');
     session_name('osobnosti_session');
     session_save_path($dir.'/sessions');
-    ini_set('session.use_strict_mode','1'); ini_set('session.use_only_cookies','1'); ini_set('session.gc_maxlifetime','7200');
+    ini_set('session.use_strict_mode','1'); ini_set('session.use_only_cookies','1'); ini_set('session.gc_maxlifetime','43200');
     ini_set('session.gc_probability','1'); ini_set('session.gc_divisor','100');
     session_set_cookie_params(['lifetime'=>0,'path'=>'/osobnosti_test/','secure'=>!$test,'httponly'=>true,'samesite'=>'Strict']);
     session_start();
     if (isset($_SESSION['expires']) && $_SESSION['expires']<time()) { $_SESSION=[]; session_regenerate_id(true); }
     $_SESSION['csrf']??=bin2hex(random_bytes(32));
     function query(string $sql,array $params=[]): PDOStatement {global $db; $s=$db->prepare($sql);$s->execute($params);return $s;}
-    function account(): ?string { $id=$_SESSION['account']??null; return $id && query('SELECT id FROM accounts WHERE id=?',[$id])->fetchColumn() ? $id : null; }
-    function requireAccount(): string {return account()??fail('Přihlas se znovu. Přihlášení platí dvě hodiny.',401);}
+    function account(): ?string {return authRecord()['id']??null;}
+    function requireAccount(): string {return account()??fail('Pro přístup k účtu se přihlas znovu. Odpovědi v této stránce zůstaly zachované.',401);}
     function token(): string {return rtrim(strtr(base64_encode(random_bytes(32)),'+/','-_'),'=');}
     function seal(array $value): string {global $config; $nonce=random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);return base64_encode($nonce.sodium_crypto_secretbox(json_encode($value,JSON_THROW_ON_ERROR),$nonce,hex2bin($config['key'])));}
     function unseal(string $value): array {global $config; $v=base64_decode($value,true);$s=sodium_crypto_secretbox_open(substr($v,24),substr($v,0,24),hex2bin($config['key']));if($s===false)throw new RuntimeException('Stored data unavailable');return json_decode($s,true,512,JSON_THROW_ON_ERROR);}
@@ -46,7 +48,8 @@ try {
         query('INSERT INTO rate_limits(bucket,window,hits,expires) VALUES(?,?,1,?) ON CONFLICT(bucket,window) DO UPDATE SET hits=hits+1',[$key,$window,time()+$seconds]);
         if(query('SELECT hits FROM rate_limits WHERE bucket=? AND window=?',[$key,$window])->fetchColumn()>$limit){header('Retry-After: '.$seconds);fail('Příliš mnoho pokusů. Zkus to později.',429);}
     }
-    if ($_SERVER['REQUEST_METHOD']==='GET') reply(['csrf'=>$_SESSION['csrf'],'account'=>account()]);
+    restoreRemember();
+    if ($_SERVER['REQUEST_METHOD']==='GET') reply(authInfo());
     if ($_SERVER['REQUEST_METHOD']!=='POST') fail('Použij POST.',405);
     if (($_SERVER['HTTP_ORIGIN']??'')!==$origin || !hash_equals($_SESSION['csrf'],$_SERVER['HTTP_X_CSRF_TOKEN']??'')) fail('Obnov přihlášení a zkus akci znovu.',403);
     if (!str_starts_with($_SERVER['CONTENT_TYPE']??'','application/json')) fail('Očekáván JSON.',415);
@@ -54,6 +57,8 @@ try {
     $raw=file_get_contents('php://input',false,null,0,32769);if(strlen($raw)>32768)fail('Příliš velká data.',413);
     $body=json_decode($raw,true,32,JSON_THROW_ON_ERROR);if(!is_array($body))fail('Neplatná data.');
     $action=$body['action']??'';
+    if(!is_string($action))fail('Neplatná akce.');
+    handleAuth($action,$body);
     $schema=json_decode(file_get_contents(__DIR__.'/schema.json'),true,512,JSON_THROW_ON_ERROR);
     function cleanSnapshot(mixed $v): array {global $schema;
         if(!is_array($v)||($v['version']??'')!=='profile-1'||($v['ipipVersion']??'')!==$schema['ipipVersion']||($v['intimacyVersion']??'')!==$schema['intimacyVersion'])fail('Nepodporovaná verze profilu.');
@@ -75,18 +80,6 @@ try {
         foreach(['context'=>'context','practices'=>'practices'] as $scope=>$ids)if(in_array($scope,$scopes,true)){$out[$scope]=[];foreach($schema[$ids] as $id){$value=$v['intimacy'][$id]??null;if($value!==null&&$value!=='skip')$out[$scope][$id]=$value;}}
         return $out;
     }
-    if($action==='register'){
-        throttle('register',30,3600);if(account())fail('Účet už je přihlášený.');
-        $id='U'.bin2hex(random_bytes(8));$key=token();query('INSERT INTO accounts VALUES(?,?,?)',[$id,hash('sha256',$key),time()]);
-        session_regenerate_id(true);$_SESSION=['account'=>$id,'expires'=>time()+7200,'csrf'=>bin2hex(random_bytes(32))];reply(['account'=>$id,'key'=>$key,'csrf'=>$_SESSION['csrf']]);
-    }
-    if($action==='login'){
-        throttle('login',40,600);$id=is_string($body['id']??null)?$body['id']:'';$key=is_string($body['key']??null)?$body['key']:'';
-        $hash=query('SELECT key_hash FROM accounts WHERE id=?',[$id])->fetchColumn();
-        if(!$hash||!hash_equals($hash,hash('sha256',$key)))fail('ID nebo soukromý klíč není správný.',401);
-        session_regenerate_id(true);$_SESSION=['account'=>$id,'expires'=>time()+7200,'csrf'=>bin2hex(random_bytes(32))];reply(['account'=>$id,'csrf'=>$_SESSION['csrf']]);
-    }
-    if($action==='logout'){$_SESSION=[];session_regenerate_id(true);$_SESSION['csrf']=bin2hex(random_bytes(32));reply(['csrf'=>$_SESSION['csrf']]);}
     if($action==='compare'||$action==='read-shared'){
         throttle('compare',120,600);$profiles=[];
         foreach($action==='read-shared'?['code']:['a','b'] as $side){$code=$body[$side]??'';if(!is_string($code)||!preg_match('/^(R[0-9a-f]{24})\.([A-Za-z0-9_-]{43})$/D',$code,$m))fail('Jeden z kódů je neplatný, zrušený nebo vypršel.',404);
@@ -112,7 +105,8 @@ try {
     }
     $owner=requireAccount();
     if($action==='list'){
-        $profiles=query('SELECT id,created FROM profiles WHERE owner=? ORDER BY created DESC,rowid DESC',[$owner])->fetchAll(PDO::FETCH_ASSOC);
+        $profiles=query('SELECT id,created,payload FROM profiles WHERE owner=? ORDER BY created DESC,rowid DESC',[$owner])->fetchAll(PDO::FETCH_ASSOC);
+        foreach($profiles as &$p){$saved=unseal($p['payload']);$p['personalityCount']=count($saved['personality']);$p['intimacyCount']=count($saved['intimacy']);unset($p['payload']);}unset($p);
         $shares=query('SELECT s.id,s.profile_id,s.scopes,s.expires FROM shares s JOIN profiles p ON p.id=s.profile_id WHERE p.owner=? ORDER BY s.expires DESC',[$owner])->fetchAll(PDO::FETCH_ASSOC);
         foreach($shares as &$s)$s['scopes']=json_decode($s['scopes'],true);reply(['profiles'=>$profiles,'shares'=>$shares]);
     }
@@ -121,7 +115,10 @@ try {
         $snapshot=cleanSnapshot($body['snapshot']??null);$id='R'.bin2hex(random_bytes(12));query('INSERT INTO profiles VALUES(?,?,?,?)',[$id,$owner,seal($snapshot),time()]);reply(['id'=>$id]);
     }
     if($action==='delete-account'){
-        if(($body['confirm']??'')!=='SMAZAT')fail('Pro smazání napiš SMAZAT.');query('DELETE FROM accounts WHERE id=?',[$owner]);$_SESSION=[];session_regenerate_id(true);$_SESSION['csrf']=bin2hex(random_bytes(32));reply(['csrf'=>$_SESSION['csrf']]);
+        if(($body['confirm']??'')!=='SMAZAT')fail('Pro smazání napiš SMAZAT.');
+        authThrottle($owner);
+        if(!verifySecret(authRecord(),$body['secret']??null))fail('Aktuální heslo nebo původní klíč není správný.',400);
+        forgetRemember();query('DELETE FROM accounts WHERE id=?',[$owner]);clearAuth();reply(authInfo());
     }
     if($action==='revoke'){
         query('DELETE FROM shares WHERE id=? AND profile_id IN(SELECT id FROM profiles WHERE owner=?)',[$body['id']??'',$owner]);reply(['ok'=>true]);

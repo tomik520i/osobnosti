@@ -1,6 +1,8 @@
 <?php
 // Run as the PHP service user. Never put this script or runtime data in DocumentRoot.
 declare(strict_types=1);
+if(!defined('PASSWORD_ARGON2ID')){fwrite(STDERR,"PHP Argon2id is required.\n");exit(1);}
+require __DIR__.'/auth-schema.php';
 $dir=$argv[1]??'';
 $origin=$argv[2]??'';
 $url=parse_url($origin);
@@ -24,4 +26,5 @@ CREATE INDEX IF NOT EXISTS profile_owner ON profiles(owner);
 CREATE TABLE IF NOT EXISTS shares(id TEXT PRIMARY KEY,profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,token_hash TEXT NOT NULL UNIQUE,scopes TEXT NOT NULL,expires INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS rate_limits(bucket TEXT NOT NULL,window INTEGER NOT NULL,hits INTEGER NOT NULL,expires INTEGER NOT NULL,PRIMARY KEY(bucket,window));');
 chmod($dir.'/profiles.sqlite',0600);
+migrateAuth($db);
 echo "Database initialized. No credentials printed.\n";

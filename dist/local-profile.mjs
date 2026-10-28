@@ -24,14 +24,16 @@ export function decodeDraft(raw) {
 }
 
 export function createLocalProfileStore(getStorage) {
-  let enabled=false,lastRaw=null,status='off';
-  const info=()=>({enabled,status,saved:enabled&&(status==='saved'||status==='restored'),conflict:status==='conflict'});
+  let enabled=false,lastRaw=null,status='off',scopes=['personality','intimacy'];
+  const info=()=>({enabled,status,scopes:[...scopes],saved:enabled&&(status==='saved'||status==='restored'),conflict:status==='conflict'});
   function load(){
     try {
       lastRaw=getStorage().getItem(LOCAL_PROFILE_KEY);
       if(lastRaw===null){status='off';return null;}
       const draft=decodeDraft(lastRaw);
       if(!draft){status='invalid';return null;}
+      const data=JSON.parse(lastRaw);
+      scopes=Array.isArray(data.scopes)?['personality','intimacy'].filter(s=>data.scopes.includes(s)):['personality','intimacy'];
       enabled=true;status='restored';return draft;
     }catch{status='read-error';return null;}
   }
@@ -48,7 +50,10 @@ export function createLocalProfileStore(getStorage) {
     if(!enabled)return false;
     if(checkExternal())return false;
     try {
-      const raw=JSON.stringify({version:1,ipipVersion:VERSION,intimacyVersion:INTIMACY_VERSION,draft:cleanDraft(draft)});
+      const filtered=cleanDraft(draft);
+      if(!scopes.includes('personality')){filtered.personality={};filtered.personalityStep=0;filtered.finishedAt=null;}
+      if(!scopes.includes('intimacy')){filtered.intimacy={};filtered.intimacyStep=0;}
+      const raw=JSON.stringify({version:1,ipipVersion:VERSION,intimacyVersion:INTIMACY_VERSION,scopes,draft:filtered});
       if(raw!==lastRaw)getStorage().setItem(LOCAL_PROFILE_KEY,raw);
       lastRaw=raw;status='saved';return true;
     }catch{status='write-error';return false;}
@@ -56,6 +61,14 @@ export function createLocalProfileStore(getStorage) {
   function enable(draft){
     if(status==='conflict')return false;
     if(checkExternal())return false;
+    scopes=['personality','intimacy'];enabled=true;return save(draft);
+  }
+  function setScope(scope,remember,draft){
+    if(!['personality','intimacy'].includes(scope)||status==='conflict'||checkExternal())return false;
+    const selected=new Set(enabled?scopes:[]);
+    if(remember)selected.add(scope);else selected.delete(scope);
+    scopes=[...selected];
+    if(!scopes.length)return forget();
     enabled=true;return save(draft);
   }
   function forget(){
@@ -63,5 +76,5 @@ export function createLocalProfileStore(getStorage) {
     try {getStorage().removeItem(LOCAL_PROFILE_KEY);lastRaw=null;status='off';return true;}
     catch {status='delete-error';return false;}
   }
-  return {load,save,enable,forget,checkExternal,info};
+  return {load,save,enable,setScope,forget,checkExternal,info};
 }

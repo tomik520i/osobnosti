@@ -7,6 +7,25 @@ import {roleScores} from '../dist/extensions-data.mjs';
 function memory(){const values=new Map();return {getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)};}
 const draft={personality:{1:4,2:2,3:3},intimacy:{'dominant-1':4,'dominant-2':5,'submissive-1':'na',solo:'skip',toys:'no'},personalityStep:3,intimacyStep:7,finishedAt:'2026-10-27T08:00:00.000Z'};
 
+test('Each completed test chooses persistence independently; session choice removes only that persistent module',()=>{
+  const local=memory(),session=memory(),device=createLocalProfileStore(()=>local),tab=createLocalProfileStore(()=>session);
+  device.load();tab.load();tab.enable(draft);
+  assert.equal(device.setScope('personality',true,draft),true);
+  let reopened=createLocalProfileStore(()=>local);let restored=reopened.load();
+  assert.deepEqual(restored.personality,draft.personality);assert.deepEqual(restored.intimacy,{});
+  assert.deepEqual(reopened.info().scopes,['personality']);
+  device.save({...draft,intimacy:{toys:'yes'}});
+  assert.deepEqual(createLocalProfileStore(()=>local).load().intimacy,{});
+  device.setScope('intimacy',true,draft);
+  assert.deepEqual(createLocalProfileStore(()=>local).load().intimacy,draft.intimacy);
+  device.setScope('intimacy',false,draft);
+  assert.deepEqual(createLocalProfileStore(()=>local).load().intimacy,{});
+  assert.deepEqual(createLocalProfileStore(()=>session).load(),draft);
+  device.setScope('personality',false,draft);
+  assert.equal(local.getItem(LOCAL_PROFILE_KEY),null);
+  tab.forget();assert.equal(session.getItem(LOCAL_PROFILE_KEY),null);
+});
+
 test('No browser data is written until remembering is explicitly enabled; reopening restores both modules and progress',()=>{
   const storage=memory(),first=createLocalProfileStore(()=>storage);
   assert.equal(first.load(),null);assert.equal(first.save(draft),false);assert.equal(storage.getItem(LOCAL_PROFILE_KEY),null);

@@ -10,7 +10,7 @@ Statický náhled nespouští PHP API a neposílá PHP soubory klientovi. Pro ú
 
 ## Účty a sdílení
 
-Požadavky: PHP 8.3+, rozšíření `pdo_sqlite`, `sodium`, `curl`, sessions a HTTPS. Veřejná část je připravená pro URL cestu `/osobnosti_test/`; stejnou cestu má session cookie v `dist/api.php`.
+Požadavky: PHP 8.3+ s podporou Argon2id, rozšíření `pdo_sqlite`, `sodium`, `curl`, sessions a HTTPS. Veřejná část je připravená pro URL cestu `/osobnosti_test/`; stejnou cestu má session cookie v `dist/api.php`.
 
 1. Zveřejni pouze obsah `dist/` v `/osobnosti_test/`. Kořen repozitáře ani `server/` nesmí být webovým kořenem.
 2. Vytvoř soukromý adresář mimo webový kořen. Setup spouštěj pod uživatelem, pod kterým běží PHP.
@@ -30,6 +30,18 @@ Za důvěryhodnou HTTPS reverzní proxy nastav před prvním setupem `OSOBNOSTI_
 `.htaccess` obsahuje bezpečnostní hlavičky, zákaz výpisu adresářů a limit velikosti požadavku. Apache musí povolit příslušné direktivy; u jiného webserveru nastav jejich ekvivalenty. API nepovoluje CORS. Limity požadavků používají adresu přímého protějšku; za proxy proto mohou být společné pro více uživatelů.
 
 Uprav informace o soukromí v `dist/content.mjs` podle skutečného provozu, zejména zálohy, logy a zpracování AI. Repozitář nedodává správu záloh, monitorování ani nezávislý bezpečnostní audit.
+
+## Aktualizace existujících účtů z verze 3.7
+
+Před aktualizací vytvoř konzistentní soukromou zálohu databáze a konfigurace mimo webový kořen. Ověř dostupnost Argon2id. Během migrace pozastav zápisy API; původní registrace používala INSERT bez názvů sloupců a po přidání sloupců není kompatibilní.
+
+~~~sh
+php server/migrate-auth.php /absolute/private/data
+~~~
+
+Migrace je transakční a opakovatelná. Přidá nickname, hash hesla, verzi přihlášení a tabulku zapamatovaných přihlášení. ID účtů, vlastnictví výsledků a porovnávací kódy zachová. Nasaď společně nové api.php, auth.php a statické soubory. Registrace nyní vyžaduje nickname a heslo. Starší uživatel nastaví heslo až po přihlášení svým původním klíčem. Při návratu staré aplikace neobnovuj starou databázi přes novější uživatelská data; stará autentizace navíc neumí účty převedené na hesla.
+
+Bezpečnostní podklady: [OWASP Password Storage](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html), [OWASP Authentication](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html), [PHP password_hash](https://www.php.net/manual/en/function.password-hash.php). Implementace není nezávisle auditovaná. Obnovu zapomenutého hesla nedodává; provozovateli se heslo nikdy nezobrazuje. Konfigurace a zálohy musí zůstat mimo Git i veřejný adresář.
 
 ## Volitelný místní model
 

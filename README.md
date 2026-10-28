@@ -14,7 +14,7 @@
 - **Porovnání:** dva sdílecí kódy nebo jeden partnerův kód a vlastní místní profil. Výběr kategorií je na uživateli.
 - **Rozbor:** vysvětlení všech dostupných témat, společných bodů, rozdílů, nejasností a hranic; konkrétní otázky k rozhovoru.
 - **Osobní AI rozbor:** dobrovolný souvislý výklad vlastních výsledků s hypotetickými příklady, malým krokem k ověření a otázkami, kdy výklad sedí i nesedí. Přístupný z Mého profilu i výsledků.
-- **Uložení:** volitelné zapamatování v prohlížeči bez účtu, případně účet s náhodným ID a soukromým klíčem.
+- **Uložení po obou testech:** na účet s nicknamem a heslem, do tohoto zařízení, nebo pouze do relace. Každý test má vlastní volbu. Uložené výsledky jsou kdykoliv dostupné z účtu, i na jiném zařízení; lze vytvořit kód pro párové porovnávání.
 - **Sdílení:** zvolené části výsledku přes odvolatelný kód s platností 7 dní; karty PNG ke stažení do telefonu.
 - **Soukromí:** možnost smazat místní profil, uložený výsledek, sdílecí kód nebo celý účet.
 
@@ -105,9 +105,9 @@ Druhý příkaz vyžaduje PHP rozšíření popsaná v návodu a prostředí pod
 
 ## Data a soukromí
 
-Zapamatování v prohlížeči je volitelné a výchozí vypnuté. `localStorage` obsahuje odpovědi, není šifrované aplikací a je dostupné lidem s přístupem ke stejnému profilu prohlížeče. Neslouží jako záloha.
+Dlouhodobé zapamatování v prohlížeči je volitelné a výchozí vypnuté. Rozpracované odpovědi se uchovávají v `sessionStorage` aktuální karty a přežijí obnovení stránky. Obnovení zavřených karet může obnovit i relaci; explicitní smazání ji odstraní. `localStorage` obsahuje odpovědi, není šifrované aplikací a je dostupné lidem s přístupem ke stejnému profilu prohlížeče. Neslouží jako záloha.
 
-Uložení na server je samostatná volba. Databáze je mimo veřejný adresář; odpovědi jsou šifrované serverovým klíčem, přihlašovací a sdílecí tajemství se ukládají jako hashe. Správce serveru má technickou možnost data číst — nejde o koncové šifrování. Celý sdílecí kód umožňuje načíst zvolené kategorie až do zrušení nebo vypršení.
+Uložení na server je samostatná volba. Databáze je mimo veřejný adresář; odpovědi jsou šifrované serverovým klíčem, hesla používají Argon2id (64 MiB, 3 průchody, 1 vlákno), náhodná přihlašovací a sdílecí tajemství se ukládají jako hashe. Nickname je unikátní bez ohledu na velikost písmen. Obnova zapomenutého hesla není podporovaná. Volitelné zapamatování přihlášení na 30 dní používá samostatný odvolatelný token; krátká relace trvá 12 hodin. Starší účty lze převést z ID a klíče bez ztráty uložených výsledků. Správce serveru má technickou možnost data číst — nejde o koncové šifrování. Celý sdílecí kód umožňuje načíst zvolené kategorie až do zrušení nebo vypršení.
 
 Tento repozitář obsahuje zdrojový kód, dokumentaci a syntetické testovací podklady. Neobsahuje databázi uživatelů, skutečné profily, přístupové klíče, provozní logy, soukromou konfiguraci ani interní síťové adresy. Provozovatel vlastní instance odpovídá za nastavení serveru, přístupová oprávnění, zálohy a pravdivost informací o zpracování dat.
 

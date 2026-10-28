@@ -1,10 +1,11 @@
+import {createStorageChoice} from './storage-choice.mjs?v=3.8';
 import {startPage,resultActions} from './journey.mjs?v=3.7';
 import {ITEMS,SCALES,ANCHORS,VERSION,validAnswer,score,answerCount,exportReport} from './instrument.mjs';
-import {experimental,sciencePage,privacyPage,readingPage,external} from './content.mjs?v=3.7';
-import {createExtensions,methodNav,shareLink} from './extensions.mjs?v=3.7';
-import {createProfiles,accountCallout} from './profiles.mjs?v=3.7';
+import {experimental,sciencePage,privacyPage,readingPage,external} from './content.mjs?v=3.8';
+import {createExtensions,methodNav,shareLink} from './extensions.mjs?v=3.8';
+import {createProfiles,accountCallout} from './profiles.mjs?v=3.8';
 import {createMotion} from './motion.mjs?v=3.1';
-import {LOCAL_PROFILE_KEY,createLocalProfileStore} from './local-profile.mjs?v=3.2';
+import {LOCAL_PROFILE_KEY,createLocalProfileStore} from './local-profile.mjs?v=3.8';
 
 import {createPersonal} from './personal.mjs?v=3.7';
 
@@ -12,9 +13,22 @@ const main = document.querySelector('main');
 createMotion(main);
 const state = {answers:{},step:0,started:false,finished:false,finishedAt:null,resetScope:'personality'};
 const browserStore=createLocalProfileStore(()=>window.localStorage);
-const extensions=createExtensions({show:setView,go,getAnswers:()=>state.answers});
-const profiles=createProfiles({show:setView,go,getPersonality:()=>state.answers,getIntimacy:()=>extensions.getAnswers(),restore:snapshot=>{state.answers={...snapshot.personality};state.step=0;state.started=answerCount(state.answers)>0;state.finished=false;state.finishedAt=null;extensions.restore(snapshot.intimacy);persistBrowserProfile();},clear:()=>{clearCurrentAnswers();browserStore.forget();updateBrowserMemory();}});
+const sessionStore=createLocalProfileStore(()=>window.sessionStorage);
+const extensions=createExtensions({show:setView,go,getAnswers:()=>state.answers,onComplete:()=>completedTest('intimacy')});
+const profiles=createProfiles({show:setView,go,getPersonality:()=>state.answers,getIntimacy:()=>extensions.getAnswers(),restore:snapshot=>{if(Object.keys(snapshot.personality).length){state.answers={...snapshot.personality};state.step=0;state.started=true;state.finished=false;state.finishedAt=null;}if(Object.keys(snapshot.intimacy).length)extensions.restore(snapshot.intimacy);persistBrowserProfile();},clear:()=>{clearCurrentAnswers();browserStore.forget();sessionStore.forget();updateBrowserMemory();}});
 const personal=createPersonal({show:setView,getPersonality:()=>state.answers,getIntimacy:()=>extensions.getAnswers()});
+const storageChoice=createStorageChoice({choose:(scope,mode)=>{
+  profiles.cancelSave();
+  const draft=currentDraft();
+  const localOk=browserStore.setScope(scope,mode==='device',draft);
+  const sessionOk=sessionStore.enable(draft);
+  updateBrowserMemory();
+  if(mode==='account'){profiles.saveCompleted(scope);return true;}
+  if(!localOk||(mode==='session'&&!sessionOk))return false;
+  announce(mode==='device'?'Výsledek uložený v tomto prohlížeči.':'Výsledek zůstane jen pro tuto relaci.');
+  return true;
+}});
+function completedTest(scope){persistBrowserProfile();if(scope==='personality'?answerCount(state.answers)>0:extensions.hasAnswers())storageChoice.open(scope);}
 const fmt = number => number.toLocaleString('cs-CZ',{minimumFractionDigits:1,maximumFractionDigits:1});
 const esc = text => String(text).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const arrow = '<span aria-hidden="true">↗</span>';
@@ -31,7 +45,7 @@ function announce(text){document.getElementById('announcement').textContent=text
 
 function homePage(){return startPage(state.answers,extensions.getAnswers());}
 
-function introPage() {return `<div class="wrap narrow page-head"><span class="eyebrow">IPIP-50 / PŘED ZAČÁTKEM</span><h1>Odpovídej za sebe.<br><em>Tak, jak to míváš.</em></h1><p class="lead">Padesát výroků, pět možností odpovědi. Bez časového limitu a bez správných odpovědí.</p></div><div class="wrap narrow intro-body">${experimental()}<div class="paper"><h2>Jak na to</h2><p>Popisuj, jaký/á obvykle jsi nyní, ne jaký/á by sis přál/a být. U každého výroku zvaž, nakolik tě vystihuje v běžném životě. Pokud se chováš podle situace různě, zkus vystihnout svůj obvyklý způsob.</p><ol class="instruction-list"><li>Vyber jednu z pěti odpovědí. Střed znamená „ani mě vystihuje, ani nevystihuje“.</li><li>Můžeš se vracet, odpovědi měnit i mazat. Na každé stránce je pět výroků.</li><li>Otázku můžeš nechat bez odpovědi. Její škálu pak vyhodnotíme až po doplnění všech deseti položek.</li></ol><div class="quiet-note">${svgIcon('lock')}<p>Pro návrat bez účtu zapni nahoře „Pamatovat si profil v tomto prohlížeči“. Pak se průběžně ukládají i rozpracované odpovědi. Při vypnuté volbě zavření stránky odpovědi ztratí.</p></div><div class="actions"><button class="button" data-action="start">${state.started?'Pokračovat':'Začít dotazník'} ${arrow}</button><a href="#podklady" class="text-link">Nejprve si přečíst metodiku</a></div></div><p class="fine-print">Pracovní překlad není klinický nástroj ani ověřená česká adaptace IPIP-BFM-50. Výsledky slouží k orientační sebereflexi.</p></div>`;}
+function introPage() {return `<div class="wrap narrow page-head"><span class="eyebrow">IPIP-50 / PŘED ZAČÁTKEM</span><h1>Odpovídej za sebe.<br><em>Tak, jak to míváš.</em></h1><p class="lead">Padesát výroků, pět možností odpovědi. Bez časového limitu a bez správných odpovědí.</p></div><div class="wrap narrow intro-body">${experimental()}<div class="paper"><h2>Jak na to</h2><p>Popisuj, jaký/á obvykle jsi nyní, ne jaký/á by sis přál/a být. U každého výroku zvaž, nakolik tě vystihuje v běžném životě. Pokud se chováš podle situace různě, zkus vystihnout svůj obvyklý způsob.</p><ol class="instruction-list"><li>Vyber jednu z pěti odpovědí. Střed znamená „ani mě vystihuje, ani nevystihuje“.</li><li>Můžeš se vracet, odpovědi měnit i mazat. Na každé stránce je pět výroků.</li><li>Otázku můžeš nechat bez odpovědi. Její škálu pak vyhodnotíme až po doplnění všech deseti položek.</li></ol><div class="quiet-note">${svgIcon('lock')}<p>Pro návrat bez účtu zapni nahoře „Pamatovat si oba testy v tomto prohlížeči“. Pak se průběžně ukládají i rozpracované odpovědi. Jinak zůstávají jen pro tuto relaci. Po dokončení každého testu si vybereš, kam jeho výsledek uložit.</p></div><div class="actions"><button class="button" data-action="start">${state.started?'Pokračovat':'Začít dotazník'} ${arrow}</button><a href="#podklady" class="text-link">Nejprve si přečíst metodiku</a></div></div><p class="fine-print">Pracovní překlad není klinický nástroj ani ověřená česká adaptace IPIP-BFM-50. Výsledky slouží k orientační sebereflexi.</p></div>`;}
 
 function renderTest(focusId) {
   const pageItems=ITEMS.slice(state.step*5,state.step*5+5);
@@ -117,34 +131,34 @@ document.addEventListener('click',event=>{
   const action=button.dataset.action;
   if(action==='start'){state.started=true;go('#dotaznik');}
   if(action==='prev'&&state.step>0){state.step--;renderTest();}
-  if(action==='next'){if(state.step<9){state.step++;renderTest();}else if(answerCount(state.answers)===50){state.finished=true;state.finishedAt=new Date();go('#vysledky');}else go('#kontrola');}
+  if(action==='next'){if(state.step<9){state.step++;renderTest();}else if(answerCount(state.answers)===50){state.finished=true;state.finishedAt=new Date();go('#vysledky');completedTest('personality');}else go('#kontrola');}
   if(action==='clear'){const id=Number(button.dataset.id);delete state.answers[id];state.finished=false;state.finishedAt=null;const question=document.getElementById(`question-${id}`);question?.querySelectorAll('input').forEach(input=>input.checked=false);question?.classList.remove('is-answered');button.hidden=true;question?.querySelector('input')?.focus();updateProgress();announce(`Odpověď na otázku ${id} byla vymazána.`);}
   if(action==='edit-item'){const id=Number(button.dataset.id);state.step=Math.floor((id-1)/5);if(location.hash==='#dotaznik')renderTest(id);else {location.hash='#dotaznik';window.addEventListener('hashchange',()=>{const el=document.getElementById(`question-${id}`);el?.focus();el?.scrollIntoView({block:'center'});},{once:true});}}
-  if(action==='evaluate'){state.finished=true;state.finishedAt=new Date();go('#vysledky');}
+  if(action==='evaluate'){state.finished=true;state.finishedAt=new Date();go('#vysledky');completedTest('personality');}
   if(action==='reset'){const dialog=document.getElementById('reset-dialog');state.resetScope=button.dataset.scope||'personality';document.getElementById('reset-description').textContent=state.resetScope==='all'?'Smažou se odpovědi a výsledky všech testů: osobnost, temperament i intimní profil. Už stažené soubory a obrázky zůstanou v zařízení.':state.resetScope==='intimacy'?'Smažou se pouze intimní odpovědi, role a preference. Osobnostní profil zůstane. Už stažené soubory a obrázky zůstanou v zařízení.':'Smažou se odpovědi IPIP-50 a mapa temperamentu. Intimní profil zůstane. Už stažené soubory a obrázky zůstanou v zařízení.';document.getElementById('reset-description').textContent+=' Smaže je i z místní kopie v tomto prohlížeči. Uložené výsledky a kódy na serveru spravuješ zvlášť v Účtu.';dialog.returnValue='';dialog.showModal();}
   if(action==='download-text')download('text');
   if(action==='download-json')download('json');
   if(action==='print')window.print();
 });
-document.getElementById('reset-dialog').addEventListener('close',event=>{if(event.target.returnValue==='reset'){personal.reset();if(state.resetScope!=='intimacy'){state.answers={};state.step=0;state.started=false;state.finished=false;state.finishedAt=null;}if(state.resetScope!=='personality')extensions.reset();if(state.resetScope==='all'){profiles.clearComparison();browserStore.forget();updateBrowserMemory();}else persistBrowserProfile();go(state.resetScope==='intimacy'?'#intimita':state.resetScope==='all'?'#testy':'#uvod');announce('Vybrané odpovědi a výsledky byly smazány. Můžeš začít znovu.');}});
+document.getElementById('reset-dialog').addEventListener('close',event=>{if(event.target.returnValue==='reset'){profiles.cancelSave();personal.reset();if(state.resetScope!=='intimacy'){state.answers={};state.step=0;state.started=false;state.finished=false;state.finishedAt=null;}if(state.resetScope!=='personality')extensions.reset();if(state.resetScope==='all'){profiles.clearComparison();profiles.cancelSave();browserStore.forget();sessionStore.forget();updateBrowserMemory();}else persistBrowserProfile();go(state.resetScope==='intimacy'?'#intimita':state.resetScope==='all'?'#testy':'#uvod');announce('Vybrané odpovědi a výsledky byly smazány. Můžeš začít znovu.');}});
 window.addEventListener('hashchange',route);
-window.addEventListener('beforeunload',event=>{if(!browserStore.info().saved&&(answerCount(state.answers)>0||extensions.hasAnswers())){event.preventDefault();event.returnValue='';}});
+window.addEventListener('beforeunload',event=>{if(!browserStore.info().saved&&!sessionStore.info().saved&&(answerCount(state.answers)>0||extensions.hasAnswers())){event.preventDefault();event.returnValue='';}});
 function currentDraft(){return {personality:state.answers,intimacy:extensions.getAnswers(),personalityStep:state.step,intimacyStep:extensions.getStep(),finishedAt:state.finishedAt?.toISOString()||null};}
-function clearCurrentAnswers(){personal.reset();state.answers={};state.step=0;state.started=false;state.finished=false;state.finishedAt=null;extensions.reset();profiles.clearComparison();}
+function clearCurrentAnswers(){profiles.cancelSave();personal.reset();state.answers={};state.step=0;state.started=false;state.finished=false;state.finishedAt=null;extensions.reset();profiles.clearComparison();}
 function updateBrowserMemory(){
   const info=browserStore.info(),box=document.getElementById('remember-profile');
-  const messages={off:'Vypnuto. Místní kopie není uložená; odpovědi zůstávají jen v otevřené kartě.',saved:'Uloženo v tomto prohlížeči. Odpovědi i postup se obnoví po zavření a novém otevření.',restored:'Profil obnoven z tohoto prohlížeče. Další změny se ukládají průběžně.',invalid:'Uložená data jsou poškozená nebo z jiné verze a nešla obnovit. Zapnutím začneš novou místní kopii.','read-error':'Úložiště prohlížeče není dostupné. Obnovení ani uložení se nepodařilo.','write-error':'Uložení se nepodařilo. Poslední změny jsou jen v otevřené kartě; můžeš si je stáhnout.','delete-error':'Místní kopii se nepodařilo smazat. Odstraň data tohoto webu v nastavení prohlížeče.',conflict:'Profil se změnil v jiné kartě. Zde je ukládání pozastavené, aby se změny nepřepsaly. Pro načtení uložené verze obnov stránku.','external-cleared':'Místní profil byl smazán v jiné kartě. Odpovědi jsme odstranili i tady.'};
-  box.checked=info.enabled;box.disabled=info.conflict;
+  const messages={off:'Dlouhodobá místní kopie není uložená. Odpovědi zůstávají jen pro tuto relaci.',saved:'Vybrané testy se obnoví po zavření a novém otevření tohoto prohlížeče. Ostatní odpovědi jsou pouze pro tuto relaci.',restored:'Profil obnoven z tohoto prohlížeče. Další změny se ukládají průběžně.',invalid:'Uložená data jsou poškozená nebo z jiné verze a nešla obnovit. Zapnutím začneš novou místní kopii.','read-error':'Úložiště prohlížeče není dostupné. Obnovení ani uložení se nepodařilo.','write-error':'Uložení se nepodařilo. Poslední změny jsou jen v otevřené kartě; můžeš si je stáhnout.','delete-error':'Místní kopii se nepodařilo smazat. Odstraň data tohoto webu v nastavení prohlížeče.',conflict:'Profil se změnil v jiné kartě. Zde je ukládání pozastavené, aby se změny nepřepsaly. Pro načtení uložené verze obnov stránku.','external-cleared':'Místní profil byl smazán v jiné kartě. Odpovědi jsme odstranili i tady.'};
+  box.checked=info.enabled&&info.scopes.length===2;box.indeterminate=info.enabled&&info.scopes.length===1;box.disabled=info.conflict;
   document.getElementById('browser-memory').hidden=false;
   document.getElementById('browser-memory').dataset.error=String(['invalid','read-error','write-error','delete-error','conflict'].includes(info.status));
-  document.getElementById('memory-summary').textContent=info.saved?'Ukládání: v tomto prohlížeči':info.enabled?'Ukládání: zkontroluj stav':'Ukládání: jen v otevřené kartě';
+  document.getElementById('memory-summary').textContent=info.saved?'V zařízení: '+info.scopes.map(s=>s==='personality'?'osobnost':'intimita').join(' + '):info.enabled?'Ukládání: zkontroluj stav':sessionStore.info().saved?'Ukládání: jen pro tuto relaci':'Ukládání: jen v otevřené stránce';
   if(['invalid','read-error','write-error','delete-error','conflict'].includes(info.status))document.getElementById('browser-memory').open=true;
-  const label=document.getElementById('browser-memory-status');if(label.textContent!==messages[info.status])label.textContent=messages[info.status];
+  const label=document.getElementById('browser-memory-status');const text=messages[info.status]+(!sessionStore.info().saved&&(answerCount(state.answers)||extensions.hasAnswers())?' Relaci se nepodařilo uložit; poslední odpovědi jsou jen v otevřené stránce.':'');if(label.textContent!==text)label.textContent=text;
 }
-function persistBrowserProfile(){personal.invalidate();browserStore.save(currentDraft());if(browserStore.info().status==='external-cleared'){clearCurrentAnswers();route();}updateBrowserMemory();}
+function persistBrowserProfile(){personal.invalidate();sessionStore.enable(currentDraft());browserStore.save(currentDraft());if(browserStore.info().status==='external-cleared'){clearCurrentAnswers();sessionStore.forget();route();}updateBrowserMemory();}
 document.addEventListener('change',event=>{
   const el=event.target;
-  if(el.id==='remember-profile'){if(el.checked)browserStore.enable(currentDraft());else browserStore.forget();updateBrowserMemory();return;}
+  if(el.id==='remember-profile'){sessionStore.enable(currentDraft());if(el.checked)browserStore.enable(currentDraft());else browserStore.forget();updateBrowserMemory();return;}
   if(el.matches('input[name^="item-"],[data-intimate]'))persistBrowserProfile();
 });
 document.addEventListener('click',event=>{
@@ -154,10 +168,12 @@ document.addEventListener('click',event=>{
 window.addEventListener('storage',event=>{
   if(event.key!==LOCAL_PROFILE_KEY&&event.key!==null)return;
   const change=browserStore.checkExternal();
-  if(change==='cleared'){clearCurrentAnswers();route();}
+  if(change==='cleared'){clearCurrentAnswers();sessionStore.forget();route();}
   updateBrowserMemory();
 });
-const recovered=browserStore.load();
+const localRecovered=browserStore.load(),sessionRecovered=sessionStore.load();
+const recovered=sessionRecovered||localRecovered;
+if(recovered&&localRecovered){for(const scope of browserStore.info().scopes){recovered[scope]=localRecovered[scope];recovered[scope+'Step']=localRecovered[scope+'Step'];if(scope==='personality')recovered.finishedAt=localRecovered.finishedAt;}}
 if(recovered){state.answers=recovered.personality;state.step=recovered.personalityStep;state.started=answerCount(state.answers)>0;state.finishedAt=recovered.finishedAt?new Date(recovered.finishedAt):null;state.finished=Boolean(state.finishedAt);extensions.restore(recovered.intimacy,recovered.intimacyStep);if(!location.hash&&(state.started||extensions.hasAnswers()))history.replaceState(null,'','#profil');}
 updateBrowserMemory();
 route();
