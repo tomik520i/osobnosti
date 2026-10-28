@@ -1,4 +1,5 @@
 import http from 'node:http';
+import {generatePersonal} from './personal-analysis.mjs';
 import {generateSummary} from './ai-explanation.mjs';
 import {AI_SCOPES} from './dist/ai-input.mjs';
 let busy=false;
@@ -6,16 +7,18 @@ const send=(res,status,data)=>{res.writeHead(status,{'Content-Type':'application
 const server=http.createServer(async(req,res)=>{
   if(req.headers.host!=='127.0.0.1:4180'||req.headers.origin){send(res,403,{error:'Použij formulář na webu.'});return;}
   if(req.url==='/health'&&req.method==='GET'){send(res,200,{ok:true,busy});return;}
-  if(req.url!=='/explain'||req.method!=='POST'||!req.headers['content-type']?.startsWith('application/json')){send(res,400,{error:'Neplatný požadavek.'});return;}
+  if(!['/explain','/personal'].includes(req.url)||req.method!=='POST'||!req.headers['content-type']?.startsWith('application/json')){send(res,400,{error:'Neplatný požadavek.'});return;}
   if(busy){send(res,429,{error:'Model právě připravuje jiné vysvětlení. Zkus to po jeho dokončení.'});return;}
   busy=true;
   try{
     let text='',size=0;
     for await(const chunk of req){size+=chunk.length;if(size>16000){send(res,413,{error:'Příliš velká data.'});return;}text+=chunk;}
     let body;try{body=JSON.parse(text);}catch{send(res,400,{error:'Neplatný JSON.'});return;}
-    if(!Array.isArray(body.scopes)||!body.scopes.length||body.scopes.length>4||body.scopes.some(s=>!Object.hasOwn(AI_SCOPES,s))||!body.a||!body.b){send(res,400,{error:'Vyber platné kategorie pro vysvětlení.'});return;}
-    // generateSummary sanitizes again and only forwards predefined facts, never free text or identity.
-    send(res,200,await generateSummary(body.a,body.b,{scopes:body.scopes}));
+    const personal=req.url==='/personal';
+    if(!body||typeof body!=='object'){send(res,400,{error:'Neplatná data.'});return;}
+    if(!Array.isArray(body.scopes)||!body.scopes.length||body.scopes.length>4||body.scopes.some(s=>!Object.hasOwn(AI_SCOPES,s))||(personal?(!body.profile||typeof body.profile!=='object'||Array.isArray(body.profile)):(!body.a||!body.b))){send(res,400,{error:'Vyber platné kategorie pro vysvětlení.'});return;}
+    // Both generators allowlist data again, excluding free text and identity.
+    send(res,200,personal?await generatePersonal(body.profile,{scopes:body.scopes}):await generateSummary(body.a,body.b,{scopes:body.scopes}));
   }catch{if(!res.headersSent)send(res,503,{error:'AI vysvětlení se nepodařilo dokončit. Běžné porovnání zůstává dostupné.'});}
   finally{busy=false;}
 });

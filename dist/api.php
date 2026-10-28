@@ -94,15 +94,16 @@ try {
             if(!$r)fail('Jeden z kódů je neplatný, zrušený nebo vypršel.',404);$profiles[]=publicProfile($r,json_decode($r['scopes'],true));
         }reply($action==='read-shared'?['profile'=>$profiles[0]]:['profiles'=>$profiles]);
     }
-    if($action==='ai-explain'){
+    if($action==='ai-explain'||$action==='ai-personal'){
+        $personal=$action==='ai-personal';
         $scopes=$body['scopes']??[];
         if(!is_array($scopes)||!count($scopes)||count($scopes)>4||count(array_diff($scopes,['personality','roles','context','practices'])))fail('Vyber platné kategorie pro AI vysvětlení.');
-        if(!is_array($body['a']??null)||!is_array($body['b']??null))fail('Chybí podklady k vysvětlení.');
+        if($personal?!is_array($body['profile']??null):(!is_array($body['a']??null)||!is_array($body['b']??null)))fail('Chybí podklady k vysvětlení.');
         throttle('ai-explain',12,600);
         if(($_SESSION['ai_last']??0)>time()-8)fail('Před dalším vysvětlením chvíli počkej.',429);
         $_SESSION['ai_last']=time();session_write_close();
-        $request=json_encode(['scopes'=>$scopes,'a'=>$body['a'],'b'=>$body['b']],JSON_THROW_ON_ERROR);
-        $curl=curl_init('http://127.0.0.1:4180/explain');
+        $request=json_encode($personal?['scopes'=>$scopes,'profile'=>$body['profile']]:['scopes'=>$scopes,'a'=>$body['a'],'b'=>$body['b']],JSON_THROW_ON_ERROR);
+        $curl=curl_init('http://127.0.0.1:4180/'.($personal?'personal':'explain'));
         curl_setopt_array($curl,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$request,CURLOPT_HTTPHEADER=>['Content-Type: application/json'],CURLOPT_RETURNTRANSFER=>true,CURLOPT_CONNECTTIMEOUT=>3,CURLOPT_TIMEOUT=>95,CURLOPT_FOLLOWLOCATION=>false]);
         $response=curl_exec($curl);$status=(int)curl_getinfo($curl,CURLINFO_RESPONSE_CODE);curl_close($curl);
         if($response===false||!in_array($status,[200,400,413,429,503],true))fail('AI vysvětlení teď není dostupné. Běžné porovnání můžeš použít dál.',503);

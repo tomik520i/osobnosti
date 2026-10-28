@@ -1,4 +1,4 @@
-import {startPage,profileHub,resultActions} from './journey.mjs?v=3.6';
+import {startPage,profileHub,resultActions} from './journey.mjs?v=3.7';
 import {score,answerCount,validAnswer} from './instrument.mjs';
 import {ROLE_INFO,ROLE_ITEMS,CONTEXT_ITEMS,PRACTICES,PRACTICE_CHOICES,INTIMACY_PAGES,INTIMACY_VERSION,validIntimate,intimateCount,roleScores,contextHighlights,temperament,intimateExport,SOURCES} from './extensions-data.mjs';
 import {drawCard,saveCanvas} from './share-cards.mjs';
@@ -9,7 +9,7 @@ const anchors=['Vůbec ne','Spíše ne','Částečně','Spíše ano','Velmi'];
 const bands={lower:'Spíše menší zájem',middle:'Střed / proměnlivé odpovědi',higher:'Spíše větší zájem',incomplete:'Chybí odpovědi'};
 const notice=`<aside class="notice"><span class="notice-symbol" aria-hidden="true">i</span><div><strong>Vlastní sebereflexní dotazník · dosud nevalidovaný</strong><p>Ukazuje deklarované zájmy. Neurčuje identitu, diagnózu ani budoucí chování. <a href="#podklady-intimita">Původ otázek a odborné podklady →</a></p></div></aside>`;
 const privacyNote='<p class="consent-note">Profil není souhlas s žádnou aktivitou. Přání i hranice se mohou měnit a domlouvají se v konkrétní situaci. Zájem o roli také neznamená zkušenost s ní.</p>';
-export const methodNav=active=>`<nav class="wrap method-nav" aria-label="Metodiky jednotlivých modulů"><a href="#podklady" ${active==='ipip'?'aria-current="page"':''}>Osobnost IPIP-50</a><a href="#podklady-temperament" ${active==='temperament'?'aria-current="page"':''}>Temperamenty</a><a href="#podklady-intimita" ${active==='intimacy'?'aria-current="page"':''}>Intimita a role</a><a href="#podklady-porovnani" ${active==='comparison'?'aria-current="page"':''}>Porovnání profilů</a></nav>`;
+export const methodNav=active=>`<nav class="wrap method-nav" aria-label="Metodiky jednotlivých modulů"><a href="#podklady" ${active==='ipip'?'aria-current="page"':''}>Osobnost IPIP-50</a><a href="#podklady-temperament" ${active==='temperament'?'aria-current="page"':''}>Temperamenty</a><a href="#podklady-intimita" ${active==='intimacy'?'aria-current="page"':''}>Intimita a role</a><a href="#podklady-porovnani" ${active==='comparison'?'aria-current="page"':''}>Porovnání profilů</a><a href="#podklady-rozbor">Osobní AI rozbor</a></nav>`;
 export const shareLink='<div class="wrap share-callout"><div><span class="eyebrow">PŘEHLED DO TELEFONU</span><h2>Tvůj profil. Na jedné kartě.</h2><p>Vyber, co chceš zachytit, a stáhni přehledný obrázek PNG.</p></div><a class="button" href="#sdileni">Připravit obrázky ↗</a></div>';
 
 export function createExtensions({show,go,getAnswers}){

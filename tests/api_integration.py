@@ -22,6 +22,10 @@ with tempfile.TemporaryDirectory(prefix='osobnosti-api-') as td:
     server=subprocess.Popen(['php','-S','127.0.0.1:4176','-t',str(web)],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     try:
         time.sleep(.5);a,b,c=Client(),Client(),Client();ok(a);ok(b);ok(c)
+        assert c.req('ai-personal',{'scopes':['personality'],'profile':{}},csrf='bad')[0]==403
+        assert c.req('ai-personal',{'scopes':['personality'],'profile':{}},origin='https://evil.example')[0]==403
+        assert c.req('ai-personal',{'scopes':['unknown'],'profile':{}})[0]==400
+        assert c.req('ai-personal',{'scopes':['personality']})[0]==400
         ua=ok(a,'register');ub=ok(b,'register');assert ua['account']!=ub['account']
         assert len(ua['key'])==43 and 'key' not in ok(a)
         cookies=list(a.jar);assert cookies and cookies[0]._rest.get('HttpOnly') is None and 'HttpOnly' in cookies[0]._rest

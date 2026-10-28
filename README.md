@@ -13,6 +13,7 @@
 - **Intimita pro dospělé:** dobrovolný přehled rolí, podmínek pro blízkost a neexplicitních preferencí aktivit. Jednotlivé otázky lze přeskočit.
 - **Porovnání:** dva sdílecí kódy nebo jeden partnerův kód a vlastní místní profil. Výběr kategorií je na uživateli.
 - **Rozbor:** vysvětlení všech dostupných témat, společných bodů, rozdílů, nejasností a hranic; konkrétní otázky k rozhovoru.
+- **Osobní AI rozbor:** dobrovolný souvislý výklad vlastních výsledků s hypotetickými příklady, malým krokem k ověření a otázkami, kdy výklad sedí i nesedí. Přístupný z Mého profilu i výsledků.
 - **Uložení:** volitelné zapamatování v prohlížeči bez účtu, případně účet s náhodným ID a soukromým klíčem.
 - **Sdílení:** zvolené části výsledku přes odvolatelný kód s platností 7 dní; karty PNG ke stažení do telefonu.
 - **Soukromí:** možnost smazat místní profil, uložený výsledek, sdílecí kód nebo celý účet.
@@ -36,7 +37,17 @@ Rozhraní je v češtině, v tmavém režimu a přizpůsobené telefonu. Zdrojov
 
 AI byla použita při vývoji aplikace, tvorbě vlastního českého překladu a textů. To nenahrazuje psychometrickou validaci ani revizi psychologem.
 
-**Za běhu aplikace místní jazykový model pouze vybírá otázky z připraveného katalogu.** Aktuální verze mu nenechává volně psát tvrzení o lidech ani počítat jejich skóre.
+**AI má dvě oddělené role.** V partnerském porovnání vybírá otázky z připraveného katalogu. V osobním rozboru píše podmíněný výklad zvolených výsledků. Výpočet skóre vždy zůstává v pevných pravidlech.
+
+### Osobní rozbor
+
+Uživatel zvolí kategorie v [Osobním rozboru](https://opicebot.cz/osobnosti_test/#rozbor). Výchozí je pouze osobnost. `personal-input.mjs` vybere podporované hodnoty, verze a připravené popisy. Model nedostává identity, přístupové kódy, původní jednotlivé položky IPIP ani nevybrané kategorie. Preference aktivit, hranice a neurčené odpovědi vysvětluje prohlížeč podle pravidel mimo model.
+
+`personal-analysis.mjs` požádá místní model o samostatnou kapitolu pro každou vybranou číselnou oblast: hypotetickou situaci, možnost pozorování, možné tření a dvě otázky pro ověření i zpochybnění výkladu. Význam jednotlivých odpovědí sestaví pevná pravidla a zobrazí jej před AI částí. Přesná čísla jsou oddělená v rozbalitelných podkladech. Kontrolujeme strukturu, povolené kapitoly, délku, podmíněné formulace a některé nepřípustné výrazy. **Tyto kontroly nejsou ověřením pravdivosti ani psychologické platnosti.** Model se může mýlit i při správném formátu; tato funkce nemá výzkumnou validaci.
+
+Člověk může kapitoly označit „Sedí / Někdy / Nesedí“. Toto hodnocení nemění skóre ani nedokazuje přesnost. Rozbor i zpětná vazba zůstávají pouze v paměti otevřené karty; změna odpovědí či kategorií, smazání, odhlášení nebo obnovení stránky je odstraní. Při výpadku nebo odmítnutém výstupu zůstávají dostupné původní výsledky a otázky podle pravidel. [Zdroje a limity osobního rozboru →](https://opicebot.cz/osobnosti_test/#podklady-rozbor)
+
+### Partnerské porovnání
 
 1. Prohlížeč spočítá skóre podle pevného klíče. Porovnání zachová označení profilů A a B i přesné druhy odpovědí.
 2. Uživatel vybere kategorie pro rozbor. Pro tuto akci se na aplikační server odešlou jen vybrané podklady; přihlašovací klíče, sdílecí kódy a nevybrané kategorie se modelu neposílají.
@@ -58,7 +69,7 @@ flowchart TD
     G --> H[Rozbor a otázky k rozhovoru]
 ```
 
-AI zde nerozhoduje o kompatibilitě, neurčuje diagnózu a neodvozuje souhlas či nevyplněné preference. Výběr otázky není odborné hodnocení její důležitosti pro vztah.
+Porovnání nerozhoduje o kompatibilitě, neurčuje diagnózu a neodvozuje souhlas či nevyplněné preference. Výběr otázky není odborné hodnocení její důležitosti pro vztah.
 
 ## Spuštění
 
@@ -79,6 +90,8 @@ Plná verze používá HTTPS webserver, PHP se SQLite a Sodium a volitelně Node
 | `dist/` | Hotové veřejné soubory webu, dotazníky, skórování, UI a PHP API |
 | `analysis-core.mjs` | Pravidla pro vysvětlení shod, rozdílů a hranic |
 | `ai-explanation.mjs` | Příprava výběru otázek, volání modelu a validace odpovědi |
+| `personal-analysis.mjs` | Osobní AI výklad, strukturovaný výstup a kontroly formátu |
+| `dist/personal-input.mjs`, `dist/personal.mjs` | Výběr podkladů, osobní rozbor a dočasná zpětná vazba |
 | `ai-service.mjs` | Místní HTTP služba rozboru, dostupná pouze přes loopback |
 | `server/` | Vytvoření soukromé databáze a generování schématu položek |
 | `tests/` | Syntetické testy skórování, porovnání, soukromí, AI a API |
@@ -103,6 +116,7 @@ Tento repozitář obsahuje zdrojový kód, dokumentaci a syntetické testovací 
 - [IPIP: původních 50 položek](https://www.ipip.ori.org/New_IPIP-50-item-scale.htm)
 - [IPIP: skórovací klíč](https://www.ipip.ori.org/newBigFive5broadKey.htm) a [pravidla skórování](https://www.ipip.ori.org/newScoringInstructions.htm)
 - [IPIP: podmínky použití a překladu](https://www.ipip.ori.org/newPermission.htm)
+- [IPIP: interpretace individuálních skóre](https://ipip.ori.org/InterpretingIndividualIPIPScaleScores.htm)
 - [Zdroje a omezení přímo v běžící aplikaci](https://opicebot.cz/osobnosti_test/#podklady)
 - [Podklady porovnání](https://opicebot.cz/osobnosti_test/#podklady-porovnani)
 

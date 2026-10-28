@@ -45,7 +45,9 @@ Výchozí spojení:
 npm run ai
 ```
 
-Pro trvalý provoz použij vlastní správu procesů. Model ani službu rozboru nevystavuj veřejně. Při změně portů uprav odpovídající adresy v `ai-explanation.mjs`, `ai-service.mjs` a `dist/api.php` společně.
+Pro trvalý provoz použij vlastní správu procesů. Model ani službu rozboru nevystavuj veřejně. Při změně portů uprav odpovídající adresy v `ai-explanation.mjs`, `personal-analysis.mjs`, `ai-service.mjs` a `dist/api.php` společně. Služba potřebuje všechny kořenové moduly rozboru a jejich importy z `dist/`, včetně `personal-input.mjs`.
+
+Služba přijímá `POST /explain` pro porovnání a `POST /personal` pro osobní výklad. PHP je zpřístupní jako akce `ai-explain` a `ai-personal` se stejnými pravidly originu, CSRF a limitů. Generování je dobrovolné a funguje bez účtu. Osobní výklad používá JSON schéma a rozpočet až 4 200 výstupních tokenů; nastav modelový kontext a propustnost tak, aby se požadavek dokončil do 80 sekund. Při nedostupnosti nebo odmítnutí výstupu zůstanou původní výsledky v prohlížeči. Modelové kontroly ověřují formát a některá omezení, nikoli pravdivost výkladu.
 
 Neplatný nebo nedostupný model způsobí výběr otázek podle pravidel. Pro tento náhradní rozbor stále musí běžet Node.js služba; bez ní zůstává dostupné běžné porovnání v prohlížeči.
 

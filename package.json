@@ -1,8 +1,8 @@
 {
   "name": "osobnosti",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "private": true,
-  "description": "Český web pro sebereflexi a porovnání profilů s volitelným místním AI výběrem otázek.",
+  "description": "Český web pro sebereflexi a porovnání profilů s volitelným místním AI rozborem a výběrem otázek.",
   "type": "module",
   "engines": { "node": ">=22" },
   "scripts": {
