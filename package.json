@@ -1,6 +1,6 @@
 {
   "name": "osobnosti",
-  "version": "3.9.1",
+  "version": "3.10.0",
   "private": true,
   "description": "Český web pro sebereflexi a porovnání profilů s volitelným místním AI rozborem a výběrem otázek.",
   "type": "module",

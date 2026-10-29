@@ -1,0 +1,128 @@
+Redakční kontrola srozumitelnosti otázek a odpovědí
+30. 10. 2026 · vysvětlivky question-help-cs-1.0.1
+
+Rozsah: všech 50 osobnostních a 38 intimních položek, jejich vysvětlivky,
+pět číselných odpovědí, možnosti nejistoty a vynechání. Kontrola s pomocí AI
+není odborná ani psychometrická validace a nezaručuje jednoznačné porozumění.
+Původní výroky, číselné hodnoty a skórovací klíč se nemění. Nové pomůcky
+mohou ovlivnit odpovídání; jejich vliv dosud nebyl výzkumně ověřen.
+
+Společné rozhodnutí: plné popisky míry vystižení celým výrokem, nikoliv
+samostatné ano/ne. Prostřední odpověď není náhradou za „nevím“.
+U rizikových výroků je význam 1 a 5 přímo na tlačítku, původní popisek
+zůstává pod ním. Střed nyní zní „Částečně mě vystihuje“ — jde o naši
+redakční úpravu českého popisku, ne ověřený ekvivalent původního měření.
+Hodnoty 2 a 4 označují mírnější nesouhlas/souhlas,
+3 střed; nezavádíme svévolné počty výskytů za týden ani nové normy.
+„Kraje“ níže znamená vlastní vysvětlení obou krajních odpovědí.
+„Výklad“ znamená konkrétní vysvětlivku plus společné celé popisky.
+
+OSOBNOST — 50 položek
+01 Duše zábavy: obrazné vyjádření, ne nutnost chodit na večírky. Výklad.
+02 Neleží na srdci: nezájem není nedostatek času pomáhat. Kraje.
+03 Vždy připraven/a: obvyklý vzorec, jedna výjimka neruší celý výrok. Kraje.
+04 Snadno stres: snadnost vzniku napětí, ne počet pracovních úkolů. Kraje.
+05 Bohatá slovní zásoba: použitelná různá slova, ne nutně cizí. Výklad.
+06 Moc nenamluvím: souhlas potvrzuje malou hovornost. Kraje.
+07 Zajímám se o lidi: vnitřní zájem, ne počet známých. Výklad.
+08 Nechávám věci povalovat: slovo „nechávám“ není zápor jednání. Kraje.
+09 Většinu času v klidu: vnitřní klid, ne nečinnost; ne bez výjimek. Kraje.
+10 Abstraktní myšlenky obtížně: schopnost rozumět, nikoliv zájem. Kraje.
+11 Mezi lidmi dobře: pohodlí, ne nutnost bavit skupinu. Výklad.
+12 Urážím lidi: urážka není věcný nesouhlas; zřídka/vůbec je nízký konec. Kraje.
+13 Detaily: pozornost jednotlivostem, ne povinná bezchybnost. Výklad.
+14 Starosti: obavy, ne samotné plánování; zřídka/vůbec nízký konec. Kraje.
+15 Živá představivost: také situace a možnosti, ne jen vizuální obraz. Výklad.
+16 V pozadí: společenské zapojení, ne fyzické umístění. Kraje.
+17 Pochopení pocitů: vcítění neznamená souhlas s činem. Výklad.
+18 Nepořádek: vlastní obvyklé jednání, ne výjimečná okolnost. Kraje.
+19 Málokdy sklíčenost: 1 často, 5 zřídka nebo nikdy. Kraje i výklad upraveny.
+20 Abstraktní myšlenky nezajímají: 1 zájem, 5 nezájem. Kraje.
+21 Začínám rozhovory: vlastní zahájení i se známými. Výklad.
+22 Problémy nezajímají: nezájem neznamená neschopnost vyřešit. Kraje.
+23 Povinnosti hned: bez odkládání, nikoliv doslova v téže sekundě. Kraje.
+24 Vyvede z míry: narušení vnitřního klidu, nemusí být vztek. Kraje.
+25 Výborné nápady: vlastní hodnocení kvality, ne počet nápadů. Výklad.
+26 Málo co říct: množství příspěvků do rozhovoru, ne hodnota člověka. Kraje.
+27 Měkké srdce: soucit, ne slabost nebo fyzická vlastnost. Výklad.
+28 Často zapomínám vracet: konkrétní zvyk, ne celá paměť. Kraje.
+29 Snadno rozrušený/á: ztráta klidu, ne jen vnější projev. Kraje.
+30 Nemám představivost: 1 dobrá představivost, 5 její nedostatek. Kraje.
+31 Večírky: lze zvážit podobná setkání; bez zkušenosti lze vynechat. Výklad.
+32 Příliš se nezajímám: vnitřní zájem, ne zdvořilost či počet kontaktů. Kraje.
+33 Mám rád/a pořádek: obliba, ne aktuální stav pokoje. Výklad.
+34 Nálada se mění: citové rozpoložení, ne změna názoru. Kraje.
+35 Chápu rychle: vlastní běžné zkušenosti; není objektivní test inteligence. Výklad.
+36 Nerad/a pozornost: postoj k pozornosti, ne zajímavost pro ostatní. Kraje.
+37 Čas na druhé: obvyklá ochota, ne nepřetržitá dostupnost. Výklad.
+38 Vyhýbám se povinnostem: vyhýbání versus nemožnost je splnit. Kraje.
+39 Časté výkyvy: četnost změn; zřídka/nikdy nízký konec, bez diagnózy. Kraje.
+40 Složitá slova: vlastní používání, ne pouze porozumění. Výklad.
+41 Nevadí pozornost: 5 snáším ji, nemusím ji vyhledávat. Kraje, nezávisle na klíči.
+42 Emoce druhých: citová odezva, ne jen rozpoznání emoce. Výklad.
+43 Časový plán: běžné držení rozvrhu, ne jediná výjimka. Výklad.
+44 Snadno podrážděný/á: mrzutost může být uvnitř bez hádky. Kraje.
+45 Přemýšlení: významy a souvislosti, ne jen odborná témata. Výklad.
+46 Tichý/á mezi neznámými: vztahuje se na dané prostředí, ne všechny lidi. Kraje.
+47 Lidé v pohodě: běžná pozorování a reakce, ne čtení myšlenek. Výklad.
+48 Náročný/á na kvalitu: požadavky na práci, ne náročnost soužití. Kraje.
+49 Často sklíčenost: 1 zřídka/nikdy, 5 často; opačně než 19. Kraje i výklad.
+50 Spousta nápadů: množství, ne nutně kvalita či uskutečnitelnost. Výklad.
+
+INTIMITA — 16 výroků o rolích
+U všech 16 jsou kraje „Tahle představa mě vůbec neláká“ / „velmi láká“.
+Zájem lze popsat bez zkušenosti. Neznalost není automaticky nízký zájem.
+Pro nejistotu je zvlášť „Nevím / netýká se mě“, pro soukromí „Nechci uvést“.
+Hodnota 3 znamená částečné vystižení, ne neznalost.
+dominant-1: domluvené vedení, ne řízení běžného života.
+dominant-2: dobrovolná kontrola v mezích, ne neomezená moc.
+submissive-1: dobrovolné přenechání vedení, ne slabost či povinnost.
+submissive-2: domluvené meze jsou měnitelné, souhlas lze odvolat.
+switch-1: zájem o obě role, nemusí být stejně silný ani současný.
+switch-2: střídání nemusí probíhat během jediného setkání.
+roleplay-1: fiktivní role dospělých, ne automaticky dominance.
+roleplay-2: zájem vymýšlet rámec, ne předchozí zkušenost.
+sadistic-1: poskytování chtěných domluvených podnětů, ne nechtěné trápení.
+sadistic-2: úzký význam dobrovolné role, ne diagnóza či povaha.
+masochistic-1: vlastní zájem, ne snášení kvůli druhému či nechtěné násilí.
+masochistic-2: dobrovolná role, ne potřeba ponižování v běžném životě.
+restraint-1: zájem o téma omezení pohybu, ne konkrétní technika.
+restraint-2: nedá se vyčíst, zda chce člověk omezení poskytovat nebo přijímat.
+equal-1: bez předávání kontroly; může současně lákat i jiná dynamika.
+equal-2: společná iniciativa není dělení přesně napůl ani rozdíl hodnoty lidí.
+
+INTIMITA — 12 kontextových výroků, každý má vlastní kraje
+desire: někdy spontánně versus nepozoruji; 5 neznamená časté či silné libido.
+responsive: rozvoj zájmu v chtěném kontaktu; nikdy pokyn zkoušet nechtěný kontakt.
+variable: proměnlivost versus stálost, ne výše touhy či změna orientace.
+close: význam citové blízkosti, ne množství lásky k partnerovi.
+privacy: podpůrný vliv soukromí, ne jeho skutečná dostupnost.
+stress: tlumení chuti, ne četnost stresu nebo jeho hodnocení.
+familiar: obliba předvídatelnosti, ne souhlas s konkrétním scénářem.
+novel: možnost podpory zájmu novým, ne souhlas se vším ani nutnost novosti.
+communication: schopnost sdělit preferenci, ne jen její znalost.
+boundaries: schopnost říci ne/stop; obtížnost neznamená souhlas ani vinu.
+talkfirst: potřeba rozhovoru; nízká hodnota neruší potřebu souhlasu.
+aftercare: ocenění péče po zážitku, nikoliv předpoklad bolesti či zkušenosti.
+
+INTIMITA — 10 aktivit, ponechány přímé slovní volby bez čísel
+Každá: Láká mě / Možná, chci probrat / Nechci / Nevím / Nechci uvést.
+„Možná“ není potvrzený zájem, „nevím“ není odmítnutí, vynechání není nic
+z toho. Žádná volba nedává souhlas pro konkrétní situaci nebo partnera.
+Nedostatek zkušenosti sám neznamená „Nechci“.
+cuddle: něžný kontakt nemusí vést k sexu.
+kiss: široká kategorie, ne konkrétní podoba, partner nebo čas.
+massage: může jít o uvolnění bez sexuálního pokračování.
+solo: zájem, ne četnost chování; je to individuální preference.
+manual: poskytování a přijímání nejsou rozlišeny, zájem nemusí zahrnovat obojí.
+oral: více podob a rolí; souhrnný zájem nelze rozšířit na všechny.
+penetration: konkrétní podoba a role nejsou určeny.
+toys: zájem o jednu pomůcku není zájem o všechny.
+words: fantazie a zprávy neznamenají souhlas s fotkami či uskutečněním.
+sensory: více druhů vjemů; zájem nemusí zahrnovat všechny.
+
+Technické ověření oddělené od redakčního úsudku:
+- Číselné mapování a skórování zůstávají v původních modulech.
+- Význam krajů se volí podle otázky, ne automaticky dle reverse scoring.
+- Testy hlídají opačný význam 19/49, zápory 20/41 a úplnost vysvětlivek.
+- Formuláře a opakování obou testů jsou zkoušeny se syntetickými odpověďmi.

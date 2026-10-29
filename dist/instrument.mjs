@@ -3,7 +3,7 @@
 export const VERSION = 'ipip50-cs-working-1.0.0';
 export const SOURCE_ITEMS = 'https://www.ipip.ori.org/New_IPIP-50-item-scale.htm';
 export const SOURCE_KEY = 'https://www.ipip.ori.org/newBigFive5broadKey.htm';
-export const ANCHORS = ['Vůbec mě nevystihuje', 'Spíše mě nevystihuje', 'Ani mě vystihuje, ani nevystihuje', 'Spíše mě vystihuje', 'Velmi mě vystihuje'];
+export const ANCHORS = ['Vůbec mě nevystihuje', 'Spíše mě nevystihuje', 'Částečně mě vystihuje', 'Spíše mě vystihuje', 'Velmi mě vystihuje'];
 export const ITEMS = [
   [1,'E',false,'Ve společnosti bývám duší zábavy.','Am the life of the party.'],
   [2,'A',true,'Příliš mi neleží na srdci, jak se daří druhým.','Feel little concern for others.'],
