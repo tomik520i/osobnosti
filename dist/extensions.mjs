@@ -6,7 +6,7 @@ import {drawCard,saveCanvas} from './share-cards.mjs';
 
 const fmt=n=>n.toLocaleString('cs-CZ',{minimumFractionDigits:1,maximumFractionDigits:1});
 const ext=(url,label)=>`<a href="${url}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`;
-const anchors=['Vůbec ne','Spíše ne','Částečně','Spíše ano','Velmi'];
+const anchors=['Vůbec mě nevystihuje','Spíše mě nevystihuje','Částečně mě vystihuje','Spíše mě vystihuje','Velmi mě vystihuje'];
 const bands={lower:'Spíše menší zájem',middle:'Střed / proměnlivé odpovědi',higher:'Spíše větší zájem',incomplete:'Chybí odpovědi'};
 const notice=`<aside class="notice"><span class="notice-symbol" aria-hidden="true">i</span><div><strong>Vlastní sebereflexní dotazník · dosud nevalidovaný</strong><p>Ukazuje deklarované zájmy. Neurčuje identitu, diagnózu ani budoucí chování. <a href="#podklady-intimita">Původ otázek a odborné podklady →</a></p></div></aside>`;
 const privacyNote='<p class="consent-note">Profil není souhlas s žádnou aktivitou. Přání i hranice se mohou měnit a domlouvají se v konkrétní situaci. Zájem o roli také neznamená zkušenost s ní.</p>';
