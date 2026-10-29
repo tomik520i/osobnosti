@@ -1,0 +1,30 @@
+.question-help{margin:0 0 16px;padding:0;border:0;min-width:0;color:#eeeff2}
+.question-help>summary{display:flex;align-items:center;gap:9px;min-height:44px;width:fit-content;max-width:100%;margin:0;padding:5px 10px 5px 0;box-sizing:border-box;cursor:pointer;list-style:none;border-radius:8px;font-size:13px;font-weight:500;color:#c6c9d0}
+.question-help>summary::-webkit-details-marker{display:none}
+.question-help>summary::marker{content:''}
+.question-help>summary:hover{color:#fff}
+.question-help>summary:focus-visible{outline:2px solid #e0e4ee;outline-offset:4px}
+.question-help-icon,.question-help-inline-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;width:23px;height:23px;border:1px solid #777c87;border-radius:50%;font-family:Georgia,serif;font-size:16px;font-style:normal;font-weight:bold;line-height:1;color:#e4e6ec;background:#2b2e35}
+.question-help-chevron{font-size:17px;line-height:1}
+.question-help[open] .question-help-chevron{transform:rotate(180deg)}
+.question-help[open]>summary{margin:0;color:#f2f3f6}
+.question-help-body{margin-top:5px;padding:16px 18px;border:1px solid #535965;border-left:3px solid #a7adba;border-radius:0 10px 10px 0;background:#262930;overflow-wrap:anywhere}
+.question-help-body p{margin:0;font-size:15px;line-height:1.7;color:#eeeff2}
+.question-help-body p+p{margin-top:12px}
+.question-help-body .question-help-example{color:#c7cbd4}
+.question-help-example strong{font-weight:600;color:#e4e7ef}
+.question-help-hint{font-size:13px;line-height:1.7;color:#c7cbd4;margin:0 0 24px}
+.question-help-inline-icon{width:17px;height:17px;font-size:12px;vertical-align:text-bottom}
+.question-list .practice-question{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,auto);gap:6px 24px}
+.practice-question>label{grid-column:1;grid-row:1;line-height:1.5}
+.practice-question>.question-help{grid-column:1;grid-row:2;margin:0}
+.practice-question>select{grid-column:2;grid-row:1/3;align-self:start;min-height:44px}
+.question-help-method{scroll-margin-top:30px}
+@media(max-width:640px){
+  .question-list .practice-question{grid-template-columns:minmax(0,1fr);gap:6px}
+  .practice-question>select{grid-column:1;grid-row:3;width:100%;margin-top:8px;font-size:16px}
+  .question-help-body{padding:14px;font-size:15px}
+  .question-help>summary{font-size:13px}
+  .question-help-hint{font-size:12px}
+}
+@media(forced-colors:active){.question-help-body,.question-help-icon{border-color:CanvasText}.question-help>summary:focus-visible{outline-color:Highlight}}

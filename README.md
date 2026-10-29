@@ -121,3 +121,9 @@ Tento repozitář obsahuje zdrojový kód, dokumentaci a syntetické testovací 
 - [Podklady porovnání](https://opicebot.cz/osobnosti_test/#podklady-porovnani)
 
 Publikovaná česká adaptace IPIP-BFM-50 není v projektu reprodukována. Její výsledky validace nelze přenášet na vlastní české znění použité zde. Podrobnější rozlišení převzatého základu a vlastní práce je v [NOTICE.md](NOTICE.md).
+
+### Vysvětlivky k otázkám
+
+U všech 50 výroků IPIP a 38 intimních položek lze tlačítkem „i Vysvětlení“ otevřít vlastní vysvětlení běžnými slovy. Například rozlišuje „málokdy“ a „často“ u sklíčenosti, zájem a schopnost u abstraktních myšlenek či nejistotu, zájem a souhlas u intimních témat. Ovládání funguje dotykem i klávesnicí pomocí nativního `details/summary`.
+
+Texty v `dist/question-help.mjs` jsou redakční pomůcka vytvořená s pomocí AI, ne oficiální výklad IPIP, odborná revize nebo validovaná součást nástroje. Příklady pouze přibližují význam; původní položky, jejich verze, odpovědi a skórování se nemění. Vliv vysvětlivek na odpovědi není ověřen. Rozbalení se samostatně nezaznamenává ani neodesílá; vše je dostupné i v místním náhledu bez AI služby.

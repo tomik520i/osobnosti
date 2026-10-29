@@ -4,7 +4,7 @@ import {AI_SCOPES,buildAIInput,selectForAI,factValues,factNote} from './ai-input
 import {currentPublicProfile} from './self-comparison.mjs';
 import {INTIMACY_VERSION,intimateCount,PRACTICE_CHOICES} from './extensions-data.mjs';
 import {compareProfiles,comparisonLabels,mapTemperament,comparisonSources} from './comparison.mjs?v=3.5';
-import {methodNav} from './extensions.mjs?v=3.8';
+import {methodNav} from './extensions.mjs?v=3.9';
 import {drawCard,saveCanvas} from './share-cards.mjs';
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=v=>v===null?'—':v.toLocaleString('cs-CZ',{maximumFractionDigits:2});
